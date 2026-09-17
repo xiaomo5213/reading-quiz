@@ -30,6 +30,7 @@
       gap: 8px;
       margin-bottom: 10px;
       flex-wrap: nowrap;
+      padding: 0 6px;
     }
     .exam-title-top {
       font-size: 0.95rem;
@@ -49,7 +50,7 @@
       align-items: center;
       gap: 6px;
       flex-wrap: wrap;
-      padding: 0 2px;
+      padding: 0 6px;
     }
     .subhead span {
       background: #d9e2ec;
@@ -59,11 +60,11 @@
       color: #1e2b3c;
     }
 
-    /* ===== 材料区域：无内框 ===== */
+    /* ===== 材料区域：两侧收缩 + 无内框 ===== */
     .passage {
       background: transparent;
       border-radius: 0;
-      padding: 0;
+      padding: 0 16px;
       margin-bottom: 14px;
       border: none;
       font-size: 1rem;
@@ -72,7 +73,7 @@
       font-size: 1.05rem;
       font-weight: 600;
       color: #0b2b42;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       padding-bottom: 6px;
       border-bottom: 1px dashed #c7d9e9;
     }
@@ -100,12 +101,13 @@
       margin: 0 -4px;
     }
 
-    /* ===== 翻译模式 ===== */
+    /* ===== 翻译模式：不同段落不同柔和背景色，无左侧加深标注 ===== */
     .trans-para {
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px 16px;
       margin-bottom: 12px;
       transition: background 0.3s;
+      border: none;
     }
     .trans-para:last-child {
       margin-bottom: 0;
@@ -202,6 +204,7 @@
     /* ===== 试题区域：无内框，只保留分隔线 ===== */
     .question-list {
       margin-top: 4px;
+      padding: 0 6px;
     }
     .question-item {
       background: transparent;
@@ -216,7 +219,6 @@
     .question-item:last-child {
       border-bottom: none;
     }
-    /* 提交后，每道题不同柔和背景色 */
     .question-item.submitted.color-0 { background: #f0f7ff; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
     .question-item.submitted.color-1 { background: #f3faf0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
     .question-item.submitted.color-2 { background: #fff9f0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
@@ -241,7 +243,7 @@
       flex-shrink: 0;
     }
 
-    /* ===== 选项：电脑端横向，手机端纵向独立成行 ===== */
+    /* ===== 选项 ===== */
     .options {
       display: flex;
       flex-wrap: wrap;
@@ -350,17 +352,19 @@
       border-color: #136b9c;
     }
 
+    /* ===== 分页器：上一页 / 页码输入框 / 下一页 ===== */
     .pagination {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      margin-top: 22px;
       gap: 12px;
+      margin-top: 22px;
+      padding: 0 6px;
     }
     .page-btn {
       background: #ffffff;
       border: 1px solid #c4d5e3;
-      padding: 10px 22px;
+      padding: 10px 20px;
       border-radius: 50px;
       font-size: 0.95rem;
       font-weight: 500;
@@ -368,7 +372,7 @@
       cursor: pointer;
       transition: all 0.15s;
       box-shadow: 0 3px 8px rgba(0,0,0,0.02);
-      flex: 0 1 auto;
+      white-space: nowrap;
     }
     .page-btn:active {
       background: #e3eef9;
@@ -377,6 +381,41 @@
       opacity: 0.4;
       pointer-events: none;
     }
+    .page-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #ffffff;
+      border: 1px solid #c4d5e3;
+      border-radius: 50px;
+      padding: 4px 14px;
+      font-size: 0.95rem;
+      color: #1e4a6e;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.02);
+    }
+    .page-input {
+      width: 42px;
+      border: none;
+      outline: none;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1e4a6e;
+      background: transparent;
+      font-family: inherit;
+      -moz-appearance: textfield;
+    }
+    .page-input::-webkit-outer-spin-button,
+    .page-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .page-total {
+      color: #7b8f9f;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
     .submit-btn {
       background: #1e6d9e;
       color: white;
@@ -423,7 +462,7 @@
       text-align: center;
       font-size: 0.75rem;
       color: #7b8f9f;
-      margin-top: 22px;
+      margin-top: 18px;
     }
 
     /* 手机端：标题更小，避免挤压翻译按钮 */
@@ -435,6 +474,24 @@
       .translate-btn {
         font-size: 0.78rem;
         padding: 4px 12px;
+      }
+      .passage {
+        padding: 0 12px;
+      }
+      .page-btn {
+        padding: 9px 14px;
+        font-size: 0.88rem;
+      }
+      .page-input-wrap {
+        padding: 4px 10px;
+        font-size: 0.88rem;
+      }
+      .page-input {
+        width: 36px;
+        font-size: 0.88rem;
+      }
+      .page-total {
+        font-size: 0.82rem;
       }
     }
 
@@ -487,11 +544,6 @@
         max-width: 1400px;
         margin: 0 auto;
       }
-      .pagination {
-        justify-content: center;
-        gap: 24px;
-      }
-      /* 电脑端标题更大一些 */
       .exam-title-top {
         font-size: 1.05rem;
       }
@@ -504,7 +556,6 @@
         width: auto;
         padding: 6px 16px;
       }
-      /* 电脑端试题区域加一点间距 */
       .question-item {
         padding: 18px 0;
       }
@@ -772,9 +823,14 @@
     html += `<div class="col-right" id="colRight">${questionsHtml}</div>`;
     html += `</div>`;
 
+    // ===== 分页器：上一页 / 页码输入框 / 下一页 =====
     html += `<div class="pagination-wrapper">`;
     html += `<div class="pagination">`;
     html += `<button class="page-btn" id="prevBtn" ${currentExamIndex === 0 ? 'disabled' : ''}>← 上一页</button>`;
+    html += `<div class="page-input-wrap">`;
+    html += `<input type="number" class="page-input" id="pageInput" value="${currentExamIndex + 1}" min="1" max="${exams.length}" inputmode="numeric">`;
+    html += `<span class="page-total">/ ${exams.length}</span>`;
+    html += `</div>`;
     html += `<button class="page-btn" id="nextBtn" ${currentExamIndex === exams.length - 1 ? 'disabled' : ''}>下一页 →</button>`;
     html += `</div>`;
     html += `</div>`;
@@ -876,28 +932,62 @@
       });
     }
 
+    // ===== 翻页逻辑 =====
+    function goToExam(index) {
+      if (index < 0 || index >= exams.length) return;
+      currentExamIndex = index;
+      activeSourceKey = null;
+      if (currentSpeakBtn) {
+        currentSpeakBtn.classList.remove('speaking');
+        if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} }
+        currentSpeakBtn = null;
+      }
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
-        if (currentExamIndex > 0) {
-          currentExamIndex--;
-          activeSourceKey = null;
-          if (currentSpeakBtn) { currentSpeakBtn.classList.remove('speaking'); if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} } currentSpeakBtn = null; }
-          if (window.speechSynthesis) window.speechSynthesis.cancel();
-          render();
-        }
+        if (currentExamIndex > 0) goToExam(currentExamIndex - 1);
       });
     }
+    const nextBtn = document.getElementById('nextBtn');
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
-        if (currentExamIndex < exams.length - 1) {
-          currentExamIndex++;
-          activeSourceKey = null;
-          if (currentSpeakBtn) { currentSpeakBtn.classList.remove('speaking'); if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} } currentSpeakBtn = null; }
-          if (window.speechSynthesis) window.speechSynthesis.cancel();
-          render();
+        if (currentExamIndex < exams.length - 1) goToExam(currentExamIndex + 1);
+      });
+    }
+
+    // 页码输入框
+    const pageInput = document.getElementById('pageInput');
+    if (pageInput) {
+      const handleJump = () => {
+        let val = parseInt(pageInput.value, 10);
+        if (isNaN(val)) {
+          pageInput.value = currentExamIndex + 1;
+          return;
         }
+        if (val < 1) val = 1;
+        if (val > exams.length) val = exams.length;
+        if (val - 1 === currentExamIndex) {
+          pageInput.value = currentExamIndex + 1;
+          return;
+        }
+        goToExam(val - 1);
+      };
+      pageInput.addEventListener('blur', handleJump);
+      pageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleJump();
+          pageInput.blur();
+        }
+      });
+      // 聚焦时全选，方便直接输入
+      pageInput.addEventListener('focus', () => {
+        pageInput.select();
       });
     }
   }
