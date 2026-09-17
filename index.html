@@ -21,32 +21,42 @@
       max-width: 800px;
       margin: 0 auto;
     }
-    /* 考期标题移到顶部，替代原来的大标题 */
-    .exam-title-top {
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: #0b2b42;
-      margin-bottom: 4px;
-      padding: 0 2px;
-    }
-    .subhead {
-      font-size: 0.85rem;
-      color: #5b6f82;
-      margin-bottom: 12px;
+    /* 顶部行：考期标题 + 翻译按钮 */
+    .top-row {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: nowrap;
+    }
+    .exam-title-top {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #0b2b42;
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .subhead {
+      font-size: 0.82rem;
+      color: #5b6f82;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       flex-wrap: wrap;
       padding: 0 2px;
     }
     .subhead span {
       background: #d9e2ec;
-      padding: 2px 10px;
+      padding: 2px 9px;
       border-radius: 30px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: #1e2b3c;
     }
-    /* 卡片改为更轻量 */
     .card {
       background: #ffffff;
       border-radius: 16px;
@@ -54,7 +64,6 @@
       box-shadow: 0 4px 14px rgba(0, 20, 30, 0.04);
       margin-bottom: 14px;
     }
-    /* 材料区域去掉内框限制，直接显示 */
     .passage {
       background: transparent;
       border-radius: 0;
@@ -173,18 +182,13 @@
       box-shadow: 0 0 0 2px #f0d77b;
     }
 
-    /* 翻译按钮 - 材料上方 */
-    .translate-wrap {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 10px;
-    }
+    /* 翻译按钮 */
     .translate-btn {
       background: #eef4fa;
       border: 1px solid #c7d9e9;
-      padding: 6px 16px;
+      padding: 5px 14px;
       border-radius: 40px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 500;
       color: #136b9c;
       display: inline-flex;
@@ -193,6 +197,7 @@
       cursor: pointer;
       transition: background 0.15s;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .translate-btn:active {
       background: #d6e3f0;
@@ -269,7 +274,6 @@
       border-color: #3b8fc2;
     }
 
-    /* 详解：去掉左侧加深色条 */
     .explain {
       background: rgba(255,255,255,0.6);
       border-radius: 12px;
@@ -399,6 +403,18 @@
       margin-top: 22px;
     }
 
+    /* 手机端：标题更小，避免挤压翻译按钮 */
+    @media (max-width: 480px) {
+      .exam-title-top {
+        font-size: 0.85rem;
+        max-width: 55%;
+      }
+      .translate-btn {
+        font-size: 0.78rem;
+        padding: 4px 12px;
+      }
+    }
+
     /* ========== 电脑端（宽屏 >= 900px）两栏布局 ========== */
     @media (min-width: 900px) {
       body {
@@ -459,9 +475,12 @@
         justify-content: center;
         gap: 24px;
       }
-      /* 电脑端：材料区的卡片更轻 */
       .col-left .card {
         padding: 16px 18px;
+      }
+      /* 电脑端标题更大一些 */
+      .exam-title-top {
+        font-size: 1.05rem;
       }
     }
 
@@ -477,9 +496,6 @@
       }
       .pagination-wrapper {
         margin-top: 0;
-      }
-      .exam-title-top {
-        font-size: 1.1rem;
       }
     }
   </style>
@@ -625,10 +641,13 @@
     // ========== 左侧阅读材料 ==========
     let passageHtml = '';
     passageHtml += `<div class="card">`;
-    // 翻译按钮 - 材料上方
-    passageHtml += `<div class="translate-wrap">`;
+
+    // 顶部行：考期标题 + 翻译按钮
+    passageHtml += `<div class="top-row">`;
+    passageHtml += `<div class="exam-title-top">${exam.title}</div>`;
     passageHtml += `<button class="translate-btn" id="translateToggle"><i>🌐</i> ${translationOn ? '隐藏翻译' : '显示翻译'}</button>`;
     passageHtml += `</div>`;
+
     passageHtml += `<div class="passage">`;
     passageHtml += `<div class="passage-title">${exam.subtitle}</div>`;
 
@@ -671,10 +690,7 @@
 
     // ========== 右侧试题 ==========
     let questionsHtml = '';
-    // 顶部考期标题（替代原来的大标题）
-    questionsHtml += `<div class="exam-title-top">${exam.title}</div>`;
     questionsHtml += `<div class="subhead"><span>每小题1分</span><span>共10题</span><span>满分10分</span></div>`;
-
     questionsHtml += `<div class="card">`;
 
     questionsHtml += `<div class="question-list">`;
