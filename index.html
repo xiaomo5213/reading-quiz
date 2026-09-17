@@ -13,7 +13,7 @@
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       background: #f2f5f9;
-      padding: 16px 12px 40px;
+      padding: 12px 10px 40px;
       color: #1e2b3c;
       line-height: 1.7;
     }
@@ -21,93 +21,58 @@
       max-width: 800px;
       margin: 0 auto;
     }
-    h1 {
-      font-size: 1.7rem;
-      margin-bottom: 4px;
+    /* 考期标题移到顶部，替代原来的大标题 */
+    .exam-title-top {
+      font-size: 1.15rem;
       font-weight: 600;
-      letter-spacing: -0.01em;
+      color: #0b2b42;
+      margin-bottom: 4px;
+      padding: 0 2px;
     }
     .subhead {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #5b6f82;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+      padding: 0 2px;
     }
     .subhead span {
       background: #d9e2ec;
       padding: 2px 10px;
       border-radius: 30px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #1e2b3c;
     }
+    /* 卡片改为更轻量 */
     .card {
       background: #ffffff;
-      border-radius: 24px;
-      padding: 20px 18px;
-      box-shadow: 0 8px 24px rgba(0, 20, 30, 0.06);
-      margin-bottom: 20px;
+      border-radius: 16px;
+      padding: 14px 14px;
+      box-shadow: 0 4px 14px rgba(0, 20, 30, 0.04);
+      margin-bottom: 14px;
     }
-    .exam-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .exam-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #0b2b42;
-      flex: 1;
-      min-width: 180px;
-    }
-    .translate-btn {
-      background: #eef4fa;
-      border: 1px solid #c7d9e9;
-      padding: 8px 18px;
-      border-radius: 40px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #136b9c;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
-    .translate-btn:active {
-      background: #d6e3f0;
-    }
-
-    /* 电脑端两栏布局 */
-    .two-col {
-      display: block;
-    }
-
-    /* 阅读材料 */
+    /* 材料区域去掉内框限制，直接显示 */
     .passage {
-      background: #f9fcff;
-      border-radius: 18px;
-      padding: 20px 18px;
-      margin-bottom: 20px;
-      border: 1px solid #dbe6ef;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 12px;
+      border: none;
       font-size: 1rem;
     }
     .passage-title {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 600;
       color: #0b2b42;
-      margin-bottom: 14px;
-      padding-bottom: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
       border-bottom: 1px dashed #c7d9e9;
     }
     .paragraph {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       text-align: justify;
       text-justify: inter-ideograph;
       word-break: break-word;
@@ -120,7 +85,7 @@
       font-weight: 500;
       transition: background 0.3s;
       border-radius: 6px;
-      line-height: 1.9;
+      line-height: 1.85;
     }
     .paragraph-text .highlight-source {
       background-color: #fff3bf !important;
@@ -130,31 +95,21 @@
       margin: 0 -4px;
     }
 
-    /* 翻译模式：不同段落不同柔和背景色，无左侧加深标注 */
+    /* 翻译模式：不同段落不同柔和背景色 */
     .trans-para {
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
       transition: background 0.3s;
     }
     .trans-para:last-child {
       margin-bottom: 0;
     }
-    .trans-para.color-0 {
-      background: #f0f7ff;
-    }
-    .trans-para.color-1 {
-      background: #f3faf0;
-    }
-    .trans-para.color-2 {
-      background: #fff9f0;
-    }
-    .trans-para.color-3 {
-      background: #f9f2ff;
-    }
-    .trans-para.color-4 {
-      background: #effcfc;
-    }
+    .trans-para.color-0 { background: #f0f7ff; }
+    .trans-para.color-1 { background: #f3faf0; }
+    .trans-para.color-2 { background: #fff9f0; }
+    .trans-para.color-3 { background: #f9f2ff; }
+    .trans-para.color-4 { background: #effcfc; }
     .trans-para .paragraph {
       margin-bottom: 0;
     }
@@ -176,9 +131,9 @@
     }
     .paragraph .zh {
       color: #2b5e7e;
-      font-size: 0.95rem;
-      margin-top: 8px;
-      padding-left: 14px;
+      font-size: 0.93rem;
+      margin-top: 6px;
+      padding-left: 12px;
       border-left: 3px solid #9bb7d0;
     }
     .zh.hidden {
@@ -191,13 +146,13 @@
       background: #eef4fa;
       border: 1px solid #c7d9e9;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 14px;
       color: #136b9c;
       transition: all 0.15s;
       margin-top: 2px;
@@ -218,45 +173,54 @@
       box-shadow: 0 0 0 2px #f0d77b;
     }
 
+    /* 翻译按钮 - 材料上方 */
+    .translate-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+    .translate-btn {
+      background: #eef4fa;
+      border: 1px solid #c7d9e9;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #136b9c;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .translate-btn:active {
+      background: #d6e3f0;
+    }
+
     /* 试题列表 */
     .question-list {
-      margin-top: 8px;
+      margin-top: 4px;
     }
     .question-item {
       background: #ffffff;
-      border-radius: 20px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
       border: 1px solid #e4ecf3;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
       transition: background 0.3s;
     }
-    /* 提交后，每道题不同柔和背景色，无左侧加深标注 */
-    .question-item.submitted.color-0 {
-      background: #f0f7ff;
-      border-color: #d4e6f5;
-    }
-    .question-item.submitted.color-1 {
-      background: #f3faf0;
-      border-color: #d9ecd4;
-    }
-    .question-item.submitted.color-2 {
-      background: #fff9f0;
-      border-color: #f5e5cc;
-    }
-    .question-item.submitted.color-3 {
-      background: #f9f2ff;
-      border-color: #e8d9f5;
-    }
-    .question-item.submitted.color-4 {
-      background: #effcfc;
-      border-color: #cceaea;
-    }
+    .question-item.submitted.color-0 { background: #f0f7ff; border-color: #d4e6f5; }
+    .question-item.submitted.color-1 { background: #f3faf0; border-color: #d9ecd4; }
+    .question-item.submitted.color-2 { background: #fff9f0; border-color: #f5e5cc; }
+    .question-item.submitted.color-3 { background: #f9f2ff; border-color: #e8d9f5; }
+    .question-item.submitted.color-4 { background: #effcfc; border-color: #cceaea; }
 
     .q-title {
       font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 8px;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
       display: flex;
       align-items: baseline;
       gap: 6px;
@@ -265,22 +229,22 @@
       background: rgba(226,236,246,0.9);
       border-radius: 20px;
       padding: 2px 10px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #1b4f72;
     }
     .options {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin: 8px 0 6px;
+      gap: 10px;
+      margin: 6px 0 4px;
     }
     .options label {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.95rem;
+      gap: 5px;
+      font-size: 0.93rem;
       background: #f2f7fc;
-      padding: 6px 16px;
+      padding: 5px 14px;
       border-radius: 40px;
       border: 1px solid #d4e0eb;
       cursor: pointer;
@@ -292,12 +256,10 @@
     }
     .options input[type="radio"] {
       accent-color: #1f7bb0;
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       margin-right: 2px;
     }
-
-    /* 提交后选项背景与题目背景融合 */
     .question-item.submitted .options label {
       background: rgba(255,255,255,0.7);
       border-color: rgba(0,0,0,0.06);
@@ -310,10 +272,10 @@
     /* 详解：去掉左侧加深色条 */
     .explain {
       background: rgba(255,255,255,0.6);
-      border-radius: 14px;
-      padding: 12px 14px;
-      margin-top: 12px;
-      font-size: 0.92rem;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 0.9rem;
       color: #1f4662;
       display: none;
     }
@@ -326,7 +288,7 @@
       padding: 2px 10px;
       border-radius: 30px;
       margin-right: 8px;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       display: inline-block;
     }
     .correct-answer {
@@ -341,17 +303,17 @@
     .source-btn {
       background: rgba(232,240,250,0.9);
       border: 1px solid #b8cde0;
-      padding: 6px 18px;
+      padding: 5px 16px;
       border-radius: 40px;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 500;
       color: #136b9c;
       cursor: pointer;
       transition: all 0.15s;
-      margin-top: 10px;
+      margin-top: 8px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .source-btn:active {
       background: #d0e2f2;
@@ -366,20 +328,20 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 28px;
+      margin-top: 22px;
       gap: 12px;
     }
     .page-btn {
       background: #ffffff;
       border: 1px solid #c4d5e3;
-      padding: 12px 26px;
+      padding: 10px 22px;
       border-radius: 50px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: #1e4a6e;
       cursor: pointer;
       transition: all 0.15s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.02);
       flex: 0 1 auto;
     }
     .page-btn:active {
@@ -393,17 +355,17 @@
       background: #1e6d9e;
       color: white;
       border: none;
-      padding: 12px 28px;
+      padding: 12px 26px;
       border-radius: 50px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s;
-      box-shadow: 0 6px 14px rgba(27, 96, 142, 0.25);
+      box-shadow: 0 5px 12px rgba(27, 96, 142, 0.2);
       flex: 1;
       text-align: center;
       width: 100%;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .submit-btn:active {
       background: #155a83;
@@ -412,13 +374,13 @@
       background: #1e6d9e;
       color: white;
       border-radius: 40px;
-      padding: 14px 24px;
+      padding: 12px 22px;
       font-weight: 600;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
       gap: 8px;
     }
@@ -432,34 +394,22 @@
     }
     .footnote {
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #7b8f9f;
-      margin-top: 28px;
-    }
-
-    /* 电脑端：翻译按钮移至阅读材料上方 */
-    .passage-header {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 10px;
-    }
-    /* 手机端：翻译按钮在试题卡片头部 */
-    .mobile-translate-wrap {
-      display: block;
-    }
-    .desktop-translate-wrap {
-      display: none;
+      margin-top: 22px;
     }
 
     /* ========== 电脑端（宽屏 >= 900px）两栏布局 ========== */
     @media (min-width: 900px) {
+      body {
+        padding: 16px 20px 40px;
+      }
       .app {
         max-width: 1400px;
-        padding: 0 20px;
       }
       .two-col {
         display: flex;
-        gap: 24px;
+        gap: 22px;
         align-items: flex-start;
       }
       .col-left {
@@ -496,7 +446,7 @@
       }
       .col-left .card,
       .col-right .card {
-        margin-bottom: 16px;
+        margin-bottom: 14px;
       }
       .col-left .passage {
         margin-bottom: 0;
@@ -509,16 +459,13 @@
         justify-content: center;
         gap: 24px;
       }
-      /* 电脑端：翻译按钮在阅读材料上方，试题头部不显示翻译按钮 */
-      .mobile-translate-wrap {
-        display: none;
-      }
-      .desktop-translate-wrap {
-        display: flex;
+      /* 电脑端：材料区的卡片更轻 */
+      .col-left .card {
+        padding: 16px 18px;
       }
     }
 
-    /* 手机端保持原样 */
+    /* 手机端 */
     @media (max-width: 899px) {
       .two-col {
         display: block;
@@ -531,20 +478,9 @@
       .pagination-wrapper {
         margin-top: 0;
       }
-      .mobile-translate-wrap {
-        display: block;
+      .exam-title-top {
+        font-size: 1.1rem;
       }
-      .desktop-translate-wrap {
-        display: none;
-      }
-    }
-
-    /* 加载状态 */
-    .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: #5b6f82;
-      font-size: 1rem;
     }
   </style>
 </head>
@@ -553,10 +489,7 @@
   <div class="loading">⏳ 正在加载题库...</div>
 </div>
 <script>
-  // ---------- 全局变量 ----------
   let exams = [];
-
-  // ---------- 全局状态 ----------
   let currentExamIndex = 0;
   let userAnswers = {};
   let submitted = {};
@@ -564,7 +497,6 @@
   let activeSourceKey = null;
   let currentSpeakBtn = null;
 
-  // ---------- 初始化用户答案 ----------
   function initUserAnswers() {
     exams.forEach(exam => {
       exam.questions.forEach((_, idx) => {
@@ -576,7 +508,6 @@
     });
   }
 
-  // 为每个exam生成扁平句子列表（含索引）
   function buildFlatSentences() {
     exams.forEach(exam => {
       exam.flatSentences = [];
@@ -584,7 +515,6 @@
     });
   }
 
-  // 辅助函数：计算段落中句子的全局起始索引
   function getParagraphStartIndex(exam, pIdx) {
     let start = 0;
     for (let i = 0; i < pIdx; i++) {
@@ -593,7 +523,6 @@
     return start;
   }
 
-  // ---------- 发音功能（优先 SpeechSynthesis，回退在线 TTS） ----------
   function speakText(text, btnEl) {
     if (currentSpeakBtn) {
       currentSpeakBtn.classList.remove('speaking');
@@ -607,12 +536,10 @@
       }
       currentSpeakBtn = null;
     }
-
     if (btnEl) {
       btnEl.classList.add('speaking');
       currentSpeakBtn = btnEl;
     }
-
     if (window.speechSynthesis) {
       try {
         window.speechSynthesis.cancel();
@@ -620,36 +547,30 @@
         utterance.lang = 'en-US';
         utterance.rate = 0.9;
         utterance.pitch = 1;
-
         utterance.onend = () => {
           if (btnEl) btnEl.classList.remove('speaking');
           if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
         };
-        utterance.onerror = (e) => {
-          console.warn('SpeechSynthesis error, fallback to online TTS:', e);
+        utterance.onerror = () => {
           if (btnEl) btnEl.classList.remove('speaking');
           if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
           fallbackOnlineTTS(text, btnEl);
         };
-
         if (btnEl) {
           btnEl._stopSpeech = () => { window.speechSynthesis.cancel(); };
         }
-
         window.speechSynthesis.speak(utterance);
         return;
       } catch (e) {
         console.warn('SpeechSynthesis exception, fallback:', e);
       }
     }
-
     fallbackOnlineTTS(text, btnEl);
   }
 
   function fallbackOnlineTTS(text, btnEl) {
     const encodedText = encodeURIComponent(text);
     const url = `https://tts.youdao.com/fanyivoice?word=${encodedText}&le=eng&keyfrom=speaker-target`;
-
     const audio = new Audio(url);
     audio.play().catch((err) => {
       console.warn('在线 TTS 播放失败:', err);
@@ -658,14 +579,12 @@
         if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
       }
     });
-
     if (btnEl) {
       btnEl._stopSpeech = () => {
         audio.pause();
         audio.currentTime = 0;
       };
     }
-
     audio.onended = () => {
       if (btnEl) btnEl.classList.remove('speaking');
       if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
@@ -676,7 +595,6 @@
     };
   }
 
-  // ---------- 渲染 ----------
   const app = document.getElementById('app');
 
   function render() {
@@ -684,7 +602,6 @@
       app.innerHTML = '<div class="loading">⚠️ 题库数据为空，请检查 data.json</div>';
       return;
     }
-
     const exam = exams[currentExamIndex];
     const examId = exam.id;
     const isSubmitted = submitted[examId];
@@ -707,14 +624,15 @@
 
     // ========== 左侧阅读材料 ==========
     let passageHtml = '';
+    passageHtml += `<div class="card">`;
+    // 翻译按钮 - 材料上方
+    passageHtml += `<div class="translate-wrap">`;
+    passageHtml += `<button class="translate-btn" id="translateToggle"><i>🌐</i> ${translationOn ? '隐藏翻译' : '显示翻译'}</button>`;
+    passageHtml += `</div>`;
+    passageHtml += `<div class="passage">`;
+    passageHtml += `<div class="passage-title">${exam.subtitle}</div>`;
 
     if (translationOn) {
-      passageHtml += `<div class="card">`;
-      passageHtml += `<div class="desktop-translate-wrap passage-header">`;
-      passageHtml += `<button class="translate-btn" id="translateToggleDesktop"><i>🌐</i> 隐藏翻译</button>`;
-      passageHtml += `</div>`;
-      passageHtml += `<div class="passage">`;
-      passageHtml += `<div class="passage-title">${exam.subtitle}</div>`;
       exam.paragraphs.forEach((para, pIdx) => {
         const colorClass = `color-${pIdx % 5}`;
         passageHtml += `<div class="trans-para ${colorClass}">`;
@@ -729,15 +647,7 @@
         });
         passageHtml += `</div>`;
       });
-      passageHtml += `</div>`;
-      passageHtml += `</div>`;
     } else {
-      passageHtml += `<div class="card">`;
-      passageHtml += `<div class="desktop-translate-wrap passage-header">`;
-      passageHtml += `<button class="translate-btn" id="translateToggleDesktop"><i>🌐</i> 显示翻译</button>`;
-      passageHtml += `</div>`;
-      passageHtml += `<div class="passage">`;
-      passageHtml += `<div class="passage-title">${exam.subtitle}</div>`;
       exam.paragraphs.forEach((para, pIdx) => {
         const startIdx = getParagraphStartIndex(exam, pIdx);
         passageHtml += `<div class="paragraph">`;
@@ -755,19 +665,17 @@
         passageHtml += `<div class="paragraph-text">${paraHtml}</div>`;
         passageHtml += `</div>`;
       });
-      passageHtml += `</div>`;
-      passageHtml += `</div>`;
     }
+    passageHtml += `</div>`;
+    passageHtml += `</div>`;
 
     // ========== 右侧试题 ==========
     let questionsHtml = '';
+    // 顶部考期标题（替代原来的大标题）
+    questionsHtml += `<div class="exam-title-top">${exam.title}</div>`;
+    questionsHtml += `<div class="subhead"><span>每小题1分</span><span>共10题</span><span>满分10分</span></div>`;
+
     questionsHtml += `<div class="card">`;
-    questionsHtml += `<div class="exam-header">`;
-    questionsHtml += `<div class="exam-title">${exam.title}</div>`;
-    questionsHtml += `<div class="mobile-translate-wrap">`;
-    questionsHtml += `<button class="translate-btn" id="translateToggleMobile"><i>🌐</i> ${translationOn ? '隐藏翻译' : '显示翻译'}</button>`;
-    questionsHtml += `</div>`;
-    questionsHtml += `</div>`;
 
     questionsHtml += `<div class="question-list">`;
     exam.questions.forEach((q, idx) => {
@@ -778,12 +686,10 @@
       const answerDisplay = q.answer;
       const hasSource = q.sourceIndices && q.sourceIndices.length > 0;
       const isActive = activeSourceKey === qKey;
-
       const questionColorClass = isSubmitted ? `submitted color-${idx % 5}` : '';
 
       questionsHtml += `<div class="question-item ${questionColorClass}" data-qidx="${idx}">`;
       questionsHtml += `<div class="q-title"><span class="q-num">Q${idx + 1}</span> ${q.q}</div>`;
-
       questionsHtml += `<div class="options">`;
       const optionLabels = { A: 'A. True', B: 'B. False', C: 'C. Not Given' };
       ['A', 'B', 'C'].forEach(opt => {
@@ -819,14 +725,10 @@
       questionsHtml += `<div class="score-banner"><span>📋 得分</span><span>${score} / 10</span></div>`;
       questionsHtml += `<button class="submit-btn" id="resetBtn" style="background:#5b7f9c;">重新作答</button>`;
     }
-
     questionsHtml += `</div>`;
 
     // ========== 整体结构 ==========
     let html = '';
-    html += `<h1>阅读判断 · 在线练习</h1>`;
-    html += `<div class="subhead"><span>每小题1分</span><span>共10题</span><span>满分10分</span></div>`;
-
     html += `<div class="two-col">`;
     html += `<div class="col-left" id="colLeft">${passageHtml}</div>`;
     html += `<div class="col-right" id="colRight">${questionsHtml}</div>`;
@@ -839,7 +741,7 @@
     html += `</div>`;
     html += `</div>`;
 
-    html += `<div class="footnote">© 在线练习 · 点击选项后请提交</div>`;
+    html += `<div class="footnote">© 在线练习</div>`;
 
     app.innerHTML = html;
     bindCommonEvents(exam, examId, isSubmitted, translationOn);
@@ -859,35 +761,27 @@
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const text = decodeURIComponent(btn.dataset.text || '');
-        if (text) {
-          speakText(text, btn);
-        }
+        if (text) speakText(text, btn);
       });
     });
   }
 
   function bindCommonEvents(exam, examId, isSubmitted, translationOn) {
-    const handleTranslateClick = () => {
-      if (currentSpeakBtn) {
-        currentSpeakBtn.classList.remove('speaking');
-        if (currentSpeakBtn._stopSpeech) {
-          try { currentSpeakBtn._stopSpeech(); } catch (e) {}
-          currentSpeakBtn._stopSpeech = null;
+    const transBtn = document.getElementById('translateToggle');
+    if (transBtn) {
+      transBtn.addEventListener('click', () => {
+        if (currentSpeakBtn) {
+          currentSpeakBtn.classList.remove('speaking');
+          if (currentSpeakBtn._stopSpeech) {
+            try { currentSpeakBtn._stopSpeech(); } catch (e) {}
+            currentSpeakBtn._stopSpeech = null;
+          }
+          currentSpeakBtn = null;
         }
-        currentSpeakBtn = null;
-      }
-      if (window.speechSynthesis) window.speechSynthesis.cancel();
-      showTranslation[examId] = !showTranslation[examId];
-      render();
-    };
-
-    const transBtnDesktop = document.getElementById('translateToggleDesktop');
-    if (transBtnDesktop) {
-      transBtnDesktop.addEventListener('click', handleTranslateClick);
-    }
-    const transBtnMobile = document.getElementById('translateToggleMobile');
-    if (transBtnMobile) {
-      transBtnMobile.addEventListener('click', handleTranslateClick);
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        showTranslation[examId] = !showTranslation[examId];
+        render();
+      });
     }
 
     if (!translationOn && !isSubmitted) {
@@ -913,15 +807,9 @@
       submitBtn.addEventListener('click', () => {
         let allAnswered = true;
         for (let i = 0; i < exam.questions.length; i++) {
-          if (!userAnswers[`${examId}_${i}`]) {
-            allAnswered = false;
-            break;
-          }
+          if (!userAnswers[`${examId}_${i}`]) { allAnswered = false; break; }
         }
-        if (!allAnswered) {
-          alert('请先完成所有题目再提交。');
-          return;
-        }
+        if (!allAnswered) { alert('请先完成所有题目再提交。'); return; }
         submitted[examId] = true;
         activeSourceKey = null;
         render();
@@ -931,9 +819,7 @@
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn && !translationOn) {
       resetBtn.addEventListener('click', () => {
-        exam.questions.forEach((_, idx) => {
-          userAnswers[`${examId}_${idx}`] = null;
-        });
+        exam.questions.forEach((_, idx) => { userAnswers[`${examId}_${idx}`] = null; });
         submitted[examId] = false;
         activeSourceKey = null;
         render();
@@ -945,11 +831,8 @@
         btn.addEventListener('click', (e) => {
           const qKey = e.currentTarget.dataset.qkey;
           if (!qKey) return;
-          if (activeSourceKey === qKey) {
-            activeSourceKey = null;
-          } else {
-            activeSourceKey = qKey;
-          }
+          if (activeSourceKey === qKey) { activeSourceKey = null; }
+          else { activeSourceKey = qKey; }
           render();
         });
       });
@@ -962,13 +845,7 @@
         if (currentExamIndex > 0) {
           currentExamIndex--;
           activeSourceKey = null;
-          if (currentSpeakBtn) {
-            currentSpeakBtn.classList.remove('speaking');
-            if (currentSpeakBtn._stopSpeech) {
-              try { currentSpeakBtn._stopSpeech(); } catch (e) {}
-            }
-            currentSpeakBtn = null;
-          }
+          if (currentSpeakBtn) { currentSpeakBtn.classList.remove('speaking'); if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} } currentSpeakBtn = null; }
           if (window.speechSynthesis) window.speechSynthesis.cancel();
           render();
         }
@@ -979,13 +856,7 @@
         if (currentExamIndex < exams.length - 1) {
           currentExamIndex++;
           activeSourceKey = null;
-          if (currentSpeakBtn) {
-            currentSpeakBtn.classList.remove('speaking');
-            if (currentSpeakBtn._stopSpeech) {
-              try { currentSpeakBtn._stopSpeech(); } catch (e) {}
-            }
-            currentSpeakBtn = null;
-          }
+          if (currentSpeakBtn) { currentSpeakBtn.classList.remove('speaking'); if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} } currentSpeakBtn = null; }
           if (window.speechSynthesis) window.speechSynthesis.cancel();
           render();
         }
@@ -993,12 +864,8 @@
     }
   }
 
-  // ---------- 启动：加载数据 ----------
   fetch('./data.json')
-    .then(res => {
-      if (!res.ok) throw new Error('无法加载 data.json');
-      return res.json();
-    })
+    .then(res => { if (!res.ok) throw new Error('无法加载 data.json'); return res.json(); })
     .then(data => {
       exams = data;
       buildFlatSentences();
