@@ -21,7 +21,8 @@
       max-width: 800px;
       margin: 0 auto;
     }
-    /* 顶部行：考期标题 + 翻译按钮 */
+
+    /* ===== 顶部行：考期标题 + 翻译按钮 ===== */
     .top-row {
       display: flex;
       justify-content: space-between;
@@ -57,18 +58,13 @@
       font-size: 0.75rem;
       color: #1e2b3c;
     }
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 14px 14px;
-      box-shadow: 0 4px 14px rgba(0, 20, 30, 0.04);
-      margin-bottom: 14px;
-    }
+
+    /* ===== 材料区域：无内框 ===== */
     .passage {
       background: transparent;
       border-radius: 0;
       padding: 0;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       border: none;
       font-size: 1rem;
     }
@@ -104,7 +100,7 @@
       margin: 0 -4px;
     }
 
-    /* 翻译模式：不同段落不同柔和背景色 */
+    /* ===== 翻译模式 ===== */
     .trans-para {
       border-radius: 12px;
       padding: 12px 14px;
@@ -149,7 +145,7 @@
       display: none;
     }
 
-    /* 发音按钮 */
+    /* ===== 发音按钮 ===== */
     .speak-btn {
       flex-shrink: 0;
       background: #eef4fa;
@@ -182,7 +178,7 @@
       box-shadow: 0 0 0 2px #f0d77b;
     }
 
-    /* 翻译按钮 */
+    /* ===== 翻译按钮 ===== */
     .translate-btn {
       background: #eef4fa;
       border: 1px solid #c7d9e9;
@@ -203,32 +199,38 @@
       background: #d6e3f0;
     }
 
-    /* 试题列表 */
+    /* ===== 试题区域：无内框，只保留分隔线 ===== */
     .question-list {
       margin-top: 4px;
     }
     .question-item {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      border: 1px solid #e4ecf3;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      background: transparent;
+      border-radius: 0;
+      padding: 16px 0;
+      margin-bottom: 0;
+      border: none;
+      border-bottom: 1px solid #e4ecf3;
+      box-shadow: none;
       transition: background 0.3s;
     }
-    .question-item.submitted.color-0 { background: #f0f7ff; border-color: #d4e6f5; }
-    .question-item.submitted.color-1 { background: #f3faf0; border-color: #d9ecd4; }
-    .question-item.submitted.color-2 { background: #fff9f0; border-color: #f5e5cc; }
-    .question-item.submitted.color-3 { background: #f9f2ff; border-color: #e8d9f5; }
-    .question-item.submitted.color-4 { background: #effcfc; border-color: #cceaea; }
+    .question-item:last-child {
+      border-bottom: none;
+    }
+    /* 提交后，每道题不同柔和背景色 */
+    .question-item.submitted.color-0 { background: #f0f7ff; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
+    .question-item.submitted.color-1 { background: #f3faf0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
+    .question-item.submitted.color-2 { background: #fff9f0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
+    .question-item.submitted.color-3 { background: #f9f2ff; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
+    .question-item.submitted.color-4 { background: #effcfc; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
 
     .q-title {
       font-weight: 600;
-      font-size: 0.98rem;
-      margin-bottom: 6px;
+      font-size: 1rem;
+      margin-bottom: 10px;
       display: flex;
       align-items: baseline;
       gap: 6px;
+      line-height: 1.6;
     }
     .q-num {
       background: rgba(226,236,246,0.9);
@@ -236,7 +238,10 @@
       padding: 2px 10px;
       font-size: 0.78rem;
       color: #1b4f72;
+      flex-shrink: 0;
     }
+
+    /* ===== 选项：电脑端横向，手机端纵向独立成行 ===== */
     .options {
       display: flex;
       flex-wrap: wrap;
@@ -246,14 +251,15 @@
     .options label {
       display: flex;
       align-items: center;
-      gap: 5px;
-      font-size: 0.93rem;
+      gap: 6px;
+      font-size: 0.95rem;
       background: #f2f7fc;
-      padding: 5px 14px;
+      padding: 8px 16px;
       border-radius: 40px;
       border: 1px solid #d4e0eb;
       cursor: pointer;
       transition: all 0.1s;
+      flex: 0 1 auto;
     }
     .options label.selected {
       background: #cfe4f5;
@@ -261,9 +267,10 @@
     }
     .options input[type="radio"] {
       accent-color: #1f7bb0;
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       margin-right: 2px;
+      flex-shrink: 0;
     }
     .question-item.submitted .options label {
       background: rgba(255,255,255,0.7);
@@ -274,6 +281,21 @@
       border-color: #3b8fc2;
     }
 
+    /* 手机端选项：每个选项独立成行 */
+    @media (max-width: 600px) {
+      .options {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .options label {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 10px 16px;
+        font-size: 0.95rem;
+      }
+    }
+
+    /* ===== 详解 ===== */
     .explain {
       background: rgba(255,255,255,0.6);
       border-radius: 12px;
@@ -369,7 +391,7 @@
       flex: 1;
       text-align: center;
       width: 100%;
-      margin-top: 6px;
+      margin-top: 10px;
     }
     .submit-btn:active {
       background: #155a83;
@@ -384,6 +406,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 10px;
       margin-bottom: 10px;
       flex-wrap: wrap;
       gap: 8px;
@@ -425,7 +448,7 @@
       }
       .two-col {
         display: flex;
-        gap: 22px;
+        gap: 24px;
         align-items: flex-start;
       }
       .col-left {
@@ -460,13 +483,6 @@
       .col-right::-webkit-scrollbar-thumb:hover {
         background: #8fb2cd;
       }
-      .col-left .card,
-      .col-right .card {
-        margin-bottom: 14px;
-      }
-      .col-left .passage {
-        margin-bottom: 0;
-      }
       .pagination-wrapper {
         max-width: 1400px;
         margin: 0 auto;
@@ -475,12 +491,22 @@
         justify-content: center;
         gap: 24px;
       }
-      .col-left .card {
-        padding: 16px 18px;
-      }
       /* 电脑端标题更大一些 */
       .exam-title-top {
         font-size: 1.05rem;
+      }
+      /* 电脑端选项回到横向排列 */
+      .options {
+        flex-direction: row;
+        gap: 10px;
+      }
+      .options label {
+        width: auto;
+        padding: 6px 16px;
+      }
+      /* 电脑端试题区域加一点间距 */
+      .question-item {
+        padding: 18px 0;
       }
     }
 
@@ -640,7 +666,6 @@
 
     // ========== 左侧阅读材料 ==========
     let passageHtml = '';
-    passageHtml += `<div class="card">`;
 
     // 顶部行：考期标题 + 翻译按钮
     passageHtml += `<div class="top-row">`;
@@ -686,12 +711,10 @@
       });
     }
     passageHtml += `</div>`;
-    passageHtml += `</div>`;
 
     // ========== 右侧试题 ==========
     let questionsHtml = '';
     questionsHtml += `<div class="subhead"><span>每小题1分</span><span>共10题</span><span>满分10分</span></div>`;
-    questionsHtml += `<div class="card">`;
 
     questionsHtml += `<div class="question-list">`;
     exam.questions.forEach((q, idx) => {
@@ -741,7 +764,6 @@
       questionsHtml += `<div class="score-banner"><span>📋 得分</span><span>${score} / 10</span></div>`;
       questionsHtml += `<button class="submit-btn" id="resetBtn" style="background:#5b7f9c;">重新作答</button>`;
     }
-    questionsHtml += `</div>`;
 
     // ========== 整体结构 ==========
     let html = '';
