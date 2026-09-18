@@ -167,18 +167,46 @@
       box-shadow: 0 0 0 2px #f0d77b;
     }
 
+    /* ===== 发音按钮 ===== */
+    .speak-btn {
+      flex-shrink: 0;
+      background: #eef4fa;
+      border: 1px solid #c7d9e9;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: #136b9c;
+      transition: all 0.15s;
+      margin-top: 2px;
+      user-select: none;
+    }
+    .speak-btn:active {
+      background: #d0e2f2;
+      transform: scale(0.92);
+    }
+    .speak-btn.speaking {
+      background: #136b9c;
+      color: #fff;
+      border-color: #136b9c;
+    }
+
     /* ===== 翻译按钮 ===== */
     .translate-btn {
       background: #eef4fa;
       border: 1px solid #c7d9e9;
-      padding: 5px 14px;
+      padding: 5px 12px;
       border-radius: 40px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 500;
       color: #136b9c;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
       transition: background 0.15s;
       white-space: nowrap;
@@ -487,7 +515,6 @@
         gap: 28px;
         align-items: flex-start;
       }
-      /* 左文章：6 份 */
       .col-left {
         flex: 6;
         min-width: 0;
@@ -497,7 +524,6 @@
         overflow-y: auto;
         padding-right: 4px;
       }
-      /* 右题目：4 份 */
       .col-right {
         flex: 4;
         min-width: 0;
@@ -543,7 +569,6 @@
       }
     }
 
-    /* 手机端 */
     @media (max-width: 899px) {
       .two-col {
         display: block;
@@ -695,6 +720,7 @@
     // ========== 左侧阅读材料 ==========
     let passageHtml = '';
 
+    // 顶部行：考期标题 + 翻译按钮
     passageHtml += `<div class="top-row">`;
     passageHtml += `<div class="exam-title-top">${exam.title}</div>`;
     passageHtml += `<button class="translate-btn" id="translateToggle"><i>🌐</i> ${translationOn ? '隐藏翻译' : '显示翻译'}</button>`;
@@ -704,6 +730,7 @@
     passageHtml += `<div class="passage-title">${exam.subtitle}</div>`;
 
     if (translationOn) {
+      // 翻译模式：逐句 + 每句英文发音按钮
       exam.paragraphs.forEach((para, pIdx) => {
         const colorClass = `color-${pIdx % 5}`;
         passageHtml += `<div class="trans-para ${colorClass}">`;
@@ -712,12 +739,14 @@
           const isHighlight = highlightIndices.has(idx);
           passageHtml += `<div class="paragraph"><div class="en ${isHighlight ? 'highlight-source' : ''}" id="sent-${examId}-${idx}">`;
           passageHtml += `<span class="en-text">${sent.en}</span>`;
+          passageHtml += `<span class="speak-btn" data-text="${encodeURIComponent(sent.en)}" title="发音">🔊</span>`;
           passageHtml += `</div>`;
           passageHtml += `<div class="zh">${sent.zh}</div></div>`;
         });
         passageHtml += `</div>`;
       });
     } else {
+      // 非翻译模式：整段显示（无发音按钮）
       exam.paragraphs.forEach((para, pIdx) => {
         const colorClass = `color-${pIdx % 5}`;
         const startIdx = getParagraphStartIndex(exam, pIdx);
@@ -814,6 +843,7 @@
 
     app.innerHTML = html;
     bindCommonEvents(exam, examId, isSubmitted, translationOn);
+    bindSpeakButtons();
 
     if (highlightIndices.size > 0) {
       const firstIdx = Math.min(...highlightIndices);
@@ -822,6 +852,17 @@
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
       }
     }
+  }
+
+  // 只绑定翻译模式下每句英文的发音按钮
+  function bindSpeakButtons() {
+    document.querySelectorAll('.speak-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = decodeURIComponent(btn.dataset.text || '');
+        if (text) speakText(text, btn);
+      });
+    });
   }
 
   function bindCommonEvents(exam, examId, isSubmitted, translationOn) {
