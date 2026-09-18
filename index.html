@@ -22,7 +22,7 @@
       margin: 0 auto;
     }
 
-    /* ===== 顶部行 ===== */
+    /* ===== 顶部行：考期标题 + 翻译按钮 ===== */
     .top-row {
       display: flex;
       justify-content: space-between;
@@ -42,12 +42,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
     .subhead {
       font-size: 0.82rem;
       color: #5b6f82;
@@ -66,7 +60,7 @@
       color: #1e2b3c;
     }
 
-    /* ===== 材料区域 ===== */
+    /* ===== 材料区域：两侧收缩 + 无内框 ===== */
     .passage {
       background: transparent;
       border-radius: 0;
@@ -83,6 +77,8 @@
       padding-bottom: 6px;
       border-bottom: 1px dashed #c7d9e9;
     }
+
+    /* 非翻译模式下：每个段落用不同柔和背景色，同一段落颜色统一，无左侧加深色条 */
     .paragraph-color {
       border-radius: 12px;
       padding: 14px 16px;
@@ -105,15 +101,6 @@
       text-justify: inter-ideograph;
       word-break: break-word;
     }
-    /* 段落头部：段落文本 + 段落发音按钮 */
-    .paragraph-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .paragraph-header .paragraph-text {
-      flex: 1;
-    }
     .paragraph-text {
       color: #0a1f2e;
       font-weight: 500;
@@ -129,7 +116,7 @@
       margin: 0 -4px;
     }
 
-    /* ===== 翻译模式 ===== */
+    /* ===== 翻译模式：不同段落不同柔和背景色，无左侧加深标注 ===== */
     .trans-para {
       border-radius: 12px;
       padding: 14px 16px;
@@ -175,7 +162,7 @@
       display: none;
     }
 
-    /* ===== 发音按钮通用 ===== */
+    /* ===== 发音按钮 ===== */
     .speak-btn {
       flex-shrink: 0;
       background: #eef4fa;
@@ -202,63 +189,53 @@
       color: #fff;
       border-color: #136b9c;
     }
-    /* 小号发音按钮（段落/试题） */
-    .speak-btn.small {
-      width: 26px;
-      height: 26px;
-      font-size: 12px;
-      margin-top: 4px;
-    }
 
     .highlight-source {
       background-color: #fff3bf !important;
       box-shadow: 0 0 0 2px #f0d77b;
     }
 
-    /* ===== 翻译按钮 / 朗读全文按钮 ===== */
-    .translate-btn,
-    .speak-all-btn {
+    /* ===== 翻译按钮 ===== */
+    .translate-btn {
       background: #eef4fa;
       border: 1px solid #c7d9e9;
-      padding: 5px 12px;
+      padding: 5px 14px;
       border-radius: 40px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 500;
       color: #136b9c;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       cursor: pointer;
       transition: background 0.15s;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .translate-btn:active,
-    .speak-all-btn:active {
+    .translate-btn:active {
       background: #d6e3f0;
     }
-    .speak-all-btn.speaking {
-      background: #136b9c;
-      color: #fff;
-      border-color: #136b9c;
-    }
 
-    /* ===== 试题区域 ===== */
+    /* ===== 试题区域：无内框，只保留分隔线 ===== */
     .question-list {
       margin-top: 4px;
       padding: 0 6px;
     }
     .question-item {
+      background: transparent;
       border-radius: 0;
       padding: 16px 0;
       margin-bottom: 0;
       border: none;
       border-bottom: 1px solid #e4ecf3;
+      box-shadow: none;
       transition: background 0.3s;
     }
     .question-item:last-child {
       border-bottom: none;
     }
+
+    /* 每道题用不同柔和背景色（无论是否提交），同一题颜色统一，无左侧加深色条 */
     .question-item.color-0 { background: #f0f7ff; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
     .question-item.color-1 { background: #f3faf0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
     .question-item.color-2 { background: #fff9f0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
@@ -270,12 +247,9 @@
       font-size: 1rem;
       margin-bottom: 10px;
       display: flex;
-      align-items: flex-start;
+      align-items: baseline;
       gap: 6px;
       line-height: 1.6;
-    }
-    .q-title .q-text {
-      flex: 1;
     }
     .q-num {
       background: rgba(226,236,246,0.9);
@@ -284,10 +258,9 @@
       font-size: 0.78rem;
       color: #1b4f72;
       flex-shrink: 0;
-      margin-top: 3px;
     }
 
-    /* ===== 选项：去掉外方框 ===== */
+    /* ===== 选项：去掉外方框，保留选择功能 ===== */
     .options {
       display: flex;
       flex-wrap: wrap;
@@ -307,6 +280,9 @@
       transition: all 0.1s;
       flex: 0 1 auto;
     }
+    .options label.selected {
+      background: transparent;
+    }
     .options input[type="radio"] {
       accent-color: #1f7bb0;
       width: 16px;
@@ -314,11 +290,13 @@
       margin-right: 2px;
       flex-shrink: 0;
     }
+    /* 选中时高亮文字颜色，作为选择反馈 */
     .options label.selected {
       color: #136b9c;
       font-weight: 600;
     }
 
+    /* 手机端选项：每个选项独立成行 */
     @media (max-width: 600px) {
       .options {
         flex-direction: column;
@@ -387,7 +365,7 @@
       border-color: #136b9c;
     }
 
-    /* ===== 分页器 ===== */
+    /* ===== 分页器：上一页 / 页码输入框 / 下一页 ===== */
     .pagination {
       display: flex;
       justify-content: center;
@@ -500,16 +478,15 @@
       margin-top: 18px;
     }
 
-    /* 手机端 */
+    /* 手机端：标题更小，避免挤压翻译按钮 */
     @media (max-width: 480px) {
       .exam-title-top {
         font-size: 0.85rem;
-        max-width: 42%;
+        max-width: 55%;
       }
-      .translate-btn,
-      .speak-all-btn {
-        font-size: 0.74rem;
-        padding: 4px 10px;
+      .translate-btn {
+        font-size: 0.78rem;
+        padding: 4px 12px;
       }
       .passage {
         padding: 0 12px;
@@ -531,7 +508,7 @@
       }
     }
 
-    /* 电脑端 */
+    /* ========== 电脑端（宽屏 >= 900px）两栏布局 ========== */
     @media (min-width: 900px) {
       body {
         padding: 16px 20px 40px;
@@ -572,6 +549,10 @@
         background: #b8cde0;
         border-radius: 10px;
       }
+      .col-left::-webkit-scrollbar-thumb:hover,
+      .col-right::-webkit-scrollbar-thumb:hover {
+        background: #8fb2cd;
+      }
       .pagination-wrapper {
         max-width: 1400px;
         margin: 0 auto;
@@ -579,6 +560,7 @@
       .exam-title-top {
         font-size: 1.05rem;
       }
+      /* 电脑端选项回到横向排列 */
       .options {
         flex-direction: row;
         gap: 10px;
@@ -592,6 +574,7 @@
       }
     }
 
+    /* 手机端 */
     @media (max-width: 899px) {
       .two-col {
         display: block;
@@ -619,8 +602,6 @@
   let showTranslation = {};
   let activeSourceKey = null;
   let currentSpeakBtn = null;
-  // 用于"朗读全文"的队列控制
-  let speakAllCancelled = false;
 
   function initUserAnswers() {
     exams.forEach(exam => {
@@ -648,26 +629,7 @@
     return start;
   }
 
-  // ========== 停止所有发音 ==========
-  function stopAllSpeech() {
-    speakAllCancelled = true;
-    if (currentSpeakBtn) {
-      currentSpeakBtn.classList.remove('speaking');
-      if (currentSpeakBtn._stopSpeech) {
-        try { currentSpeakBtn._stopSpeech(); } catch (e) {}
-        currentSpeakBtn._stopSpeech = null;
-      }
-      currentSpeakBtn = null;
-    }
-    document.querySelectorAll('.speak-all-btn.speaking').forEach(b => b.classList.remove('speaking'));
-    if (window.speechSynthesis) {
-      try { window.speechSynthesis.cancel(); } catch (e) {}
-    }
-  }
-
-  // ========== 核心发音 ==========
   function speakText(text, btnEl) {
-    // 如果当前有按钮在播，先停
     if (currentSpeakBtn) {
       currentSpeakBtn.classList.remove('speaking');
       if (currentSpeakBtn._stopSpeech) {
@@ -739,70 +701,6 @@
     };
   }
 
-  // ========== 朗读全文（按句子顺序依次朗读）==========
-  function speakAllSentences(sentences, btnEl) {
-    stopAllSpeech();
-    speakAllCancelled = false;
-    if (btnEl) btnEl.classList.add('speaking');
-
-    let idx = 0;
-    function next() {
-      if (speakAllCancelled) {
-        if (btnEl) btnEl.classList.remove('speaking');
-        return;
-      }
-      if (idx >= sentences.length) {
-        if (btnEl) btnEl.classList.remove('speaking');
-        return;
-      }
-      const text = sentences[idx].en;
-      idx++;
-      speakOneSentence(text, () => next());
-    }
-    next();
-
-    // 记录当前按钮，方便点击"朗读全文"取消
-    if (btnEl) {
-      currentSpeakBtn = null; // 不用它控制按钮状态，用speak-all的类
-      btnEl._stopSpeech = () => {
-        speakAllCancelled = true;
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-      };
-    }
-  }
-
-  // 朗读单句（用于朗读全文，不显示按钮状态）
-  function speakOneSentence(text, onDone) {
-    if (window.speechSynthesis) {
-      try {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9;
-        utterance.pitch = 1;
-        utterance.onend = () => { if (onDone) onDone(); };
-        utterance.onerror = () => {
-          // 回退到在线 TTS
-          fallbackOnlineTTSSingle(text, onDone);
-        };
-        window.speechSynthesis.speak(utterance);
-        return;
-      } catch (e) {
-        console.warn('SpeechSynthesis exception, fallback:', e);
-      }
-    }
-    fallbackOnlineTTSSingle(text, onDone);
-  }
-
-  function fallbackOnlineTTSSingle(text, onDone) {
-    const encodedText = encodeURIComponent(text);
-    const url = `https://tts.youdao.com/fanyivoice?word=${encodedText}&le=eng&keyfrom=speaker-target`;
-    const audio = new Audio(url);
-    audio.onended = () => { if (onDone) onDone(); };
-    audio.onerror = () => { if (onDone) onDone(); };
-    audio.play().catch(() => { if (onDone) onDone(); });
-  }
-
   const app = document.getElementById('app');
 
   function render() {
@@ -833,20 +731,16 @@
     // ========== 左侧阅读材料 ==========
     let passageHtml = '';
 
-    // 顶部行：考期标题 + 朗读全文 + 翻译按钮
+    // 顶部行：考期标题 + 翻译按钮
     passageHtml += `<div class="top-row">`;
     passageHtml += `<div class="exam-title-top">${exam.title}</div>`;
-    passageHtml += `<div class="top-actions">`;
-    passageHtml += `<button class="speak-all-btn" id="speakAllBtn">🔊 朗读全文</button>`;
     passageHtml += `<button class="translate-btn" id="translateToggle"><i>🌐</i> ${translationOn ? '隐藏翻译' : '显示翻译'}</button>`;
-    passageHtml += `</div>`;
     passageHtml += `</div>`;
 
     passageHtml += `<div class="passage">`;
     passageHtml += `<div class="passage-title">${exam.subtitle}</div>`;
 
     if (translationOn) {
-      // 翻译模式：逐句 + 每句发音按钮
       exam.paragraphs.forEach((para, pIdx) => {
         const colorClass = `color-${pIdx % 5}`;
         passageHtml += `<div class="trans-para ${colorClass}">`;
@@ -862,31 +756,23 @@
         passageHtml += `</div>`;
       });
     } else {
-      // 非翻译模式：整段显示 + 段落发音按钮
+      // 非翻译模式：每个段落用不同背景色包裹
       exam.paragraphs.forEach((para, pIdx) => {
         const colorClass = `color-${pIdx % 5}`;
         const startIdx = getParagraphStartIndex(exam, pIdx);
-        // 拼接整段英文
-        let paraText = '';
+        passageHtml += `<div class="paragraph-color ${colorClass}">`;
         let paraHtml = '';
         para.sentences.forEach((sent, sIdx) => {
           const idx = startIdx + sIdx;
           const isHighlight = highlightIndices.has(idx);
           const space = sIdx > 0 ? ' ' : '';
-          paraText += space + sent.en;
           if (isHighlight) {
             paraHtml += `${space}<span class="highlight-source" id="sent-${examId}-${idx}">${sent.en}</span>`;
           } else {
             paraHtml += `${space}<span id="sent-${examId}-${idx}">${sent.en}</span>`;
           }
         });
-        passageHtml += `<div class="paragraph-color ${colorClass}">`;
-        passageHtml += `<div class="paragraph">`;
-        passageHtml += `<div class="paragraph-header">`;
-        passageHtml += `<div class="paragraph-text">${paraHtml}</div>`;
-        passageHtml += `<span class="speak-btn small" data-text="${encodeURIComponent(paraText)}" title="朗读本段">🔊</span>`;
-        passageHtml += `</div>`;
-        passageHtml += `</div>`;
+        passageHtml += `<div class="paragraph"><div class="paragraph-text">${paraHtml}</div></div>`;
         passageHtml += `</div>`;
       });
     }
@@ -905,14 +791,11 @@
       const answerDisplay = q.answer;
       const hasSource = q.sourceIndices && q.sourceIndices.length > 0;
       const isActive = activeSourceKey === qKey;
+      // 每道题按索引循环使用颜色
       const questionColorClass = `color-${idx % 5}`;
 
       questionsHtml += `<div class="question-item ${questionColorClass}" data-qidx="${idx}">`;
-      questionsHtml += `<div class="q-title">`;
-      questionsHtml += `<span class="q-num">Q${idx + 1}</span>`;
-      questionsHtml += `<span class="q-text">${q.q}</span>`;
-      questionsHtml += `<span class="speak-btn small" data-text="${encodeURIComponent(q.q)}" title="朗读题干">🔊</span>`;
-      questionsHtml += `</div>`;
+      questionsHtml += `<div class="q-title"><span class="q-num">Q${idx + 1}</span> ${q.q}</div>`;
       questionsHtml += `<div class="options">`;
       const optionLabels = { A: 'A. True', B: 'B. False', C: 'C. Not Given' };
       ['A', 'B', 'C'].forEach(opt => {
@@ -983,44 +866,29 @@
     }
   }
 
-  // 绑定所有发音按钮（句子、段落、试题）
   function bindSpeakButtons() {
     document.querySelectorAll('.speak-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        // 如果正在朗读全文，先停止
-        if (document.getElementById('speakAllBtn')?.classList.contains('speaking')) {
-          stopAllSpeech();
-        }
         const text = decodeURIComponent(btn.dataset.text || '');
         if (text) speakText(text, btn);
       });
     });
-
-    // 朗读全文
-    const speakAllBtn = document.getElementById('speakAllBtn');
-    if (speakAllBtn) {
-      speakAllBtn.addEventListener('click', () => {
-        // 如果正在朗读，点击取消
-        if (speakAllBtn.classList.contains('speaking')) {
-          stopAllSpeech();
-          speakAllBtn.classList.remove('speaking');
-          return;
-        }
-        // 收集所有句子
-        const exam = exams[currentExamIndex];
-        const allSentences = [];
-        exam.paragraphs.forEach(p => p.sentences.forEach(s => allSentences.push(s)));
-        speakAllSentences(allSentences, speakAllBtn);
-      });
-    }
   }
 
   function bindCommonEvents(exam, examId, isSubmitted, translationOn) {
     const transBtn = document.getElementById('translateToggle');
     if (transBtn) {
       transBtn.addEventListener('click', () => {
-        stopAllSpeech();
+        if (currentSpeakBtn) {
+          currentSpeakBtn.classList.remove('speaking');
+          if (currentSpeakBtn._stopSpeech) {
+            try { currentSpeakBtn._stopSpeech(); } catch (e) {}
+            currentSpeakBtn._stopSpeech = null;
+          }
+          currentSpeakBtn = null;
+        }
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
         showTranslation[examId] = !showTranslation[examId];
         render();
       });
@@ -1054,7 +922,6 @@
         if (!allAnswered) { alert('请先完成所有题目再提交。'); return; }
         submitted[examId] = true;
         activeSourceKey = null;
-        stopAllSpeech();
         render();
       });
     }
@@ -1065,7 +932,6 @@
         exam.questions.forEach((_, idx) => { userAnswers[`${examId}_${idx}`] = null; });
         submitted[examId] = false;
         activeSourceKey = null;
-        stopAllSpeech();
         render();
       });
     }
@@ -1085,9 +951,14 @@
     // ===== 翻页逻辑 =====
     function goToExam(index) {
       if (index < 0 || index >= exams.length) return;
-      stopAllSpeech();
       currentExamIndex = index;
       activeSourceKey = null;
+      if (currentSpeakBtn) {
+        currentSpeakBtn.classList.remove('speaking');
+        if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} }
+        currentSpeakBtn = null;
+      }
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
