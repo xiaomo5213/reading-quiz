@@ -60,7 +60,7 @@
       color: #1e2b3c;
     }
 
-    /* ===== 材料区域：两侧收缩 + 无内框 ===== */
+    /* ===== 材料区域 ===== */
     .passage {
       background: transparent;
       border-radius: 0;
@@ -78,7 +78,7 @@
       border-bottom: 1px dashed #c7d9e9;
     }
 
-    /* 非翻译模式下：每个段落用不同柔和背景色，同一段落颜色统一，无左侧加深色条 */
+    /* 非翻译模式下：每个段落用不同柔和背景色 */
     .paragraph-color {
       border-radius: 12px;
       padding: 14px 16px;
@@ -116,7 +116,7 @@
       margin: 0 -4px;
     }
 
-    /* ===== 翻译模式：不同段落不同柔和背景色，无左侧加深标注 ===== */
+    /* ===== 翻译模式 ===== */
     .trans-para {
       border-radius: 12px;
       padding: 14px 16px;
@@ -162,34 +162,6 @@
       display: none;
     }
 
-    /* ===== 发音按钮 ===== */
-    .speak-btn {
-      flex-shrink: 0;
-      background: #eef4fa;
-      border: 1px solid #c7d9e9;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 14px;
-      color: #136b9c;
-      transition: all 0.15s;
-      margin-top: 2px;
-      user-select: none;
-    }
-    .speak-btn:active {
-      background: #d0e2f2;
-      transform: scale(0.92);
-    }
-    .speak-btn.speaking {
-      background: #136b9c;
-      color: #fff;
-      border-color: #136b9c;
-    }
-
     .highlight-source {
       background-color: #fff3bf !important;
       box-shadow: 0 0 0 2px #f0d77b;
@@ -216,7 +188,7 @@
       background: #d6e3f0;
     }
 
-    /* ===== 试题区域：无内框，只保留分隔线 ===== */
+    /* ===== 试题区域 ===== */
     .question-list {
       margin-top: 4px;
       padding: 0 6px;
@@ -235,7 +207,6 @@
       border-bottom: none;
     }
 
-    /* 每道题用不同柔和背景色（无论是否提交），同一题颜色统一，无左侧加深色条 */
     .question-item.color-0 { background: #f0f7ff; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
     .question-item.color-1 { background: #f3faf0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
     .question-item.color-2 { background: #fff9f0; border-radius: 12px; padding: 16px 14px; margin-bottom: 8px; border-bottom: none; }
@@ -260,7 +231,7 @@
       flex-shrink: 0;
     }
 
-    /* ===== 选项：去掉外方框，保留选择功能 ===== */
+    /* ===== 选项 ===== */
     .options {
       display: flex;
       flex-wrap: wrap;
@@ -282,6 +253,8 @@
     }
     .options label.selected {
       background: transparent;
+      color: #136b9c;
+      font-weight: 600;
     }
     .options input[type="radio"] {
       accent-color: #1f7bb0;
@@ -290,13 +263,7 @@
       margin-right: 2px;
       flex-shrink: 0;
     }
-    /* 选中时高亮文字颜色，作为选择反馈 */
-    .options label.selected {
-      color: #136b9c;
-      font-weight: 600;
-    }
 
-    /* 手机端选项：每个选项独立成行 */
     @media (max-width: 600px) {
       .options {
         flex-direction: column;
@@ -365,7 +332,7 @@
       border-color: #136b9c;
     }
 
-    /* ===== 分页器：上一页 / 页码输入框 / 下一页 ===== */
+    /* ===== 分页器 ===== */
     .pagination {
       display: flex;
       justify-content: center;
@@ -478,7 +445,6 @@
       margin-top: 18px;
     }
 
-    /* 手机端：标题更小，避免挤压翻译按钮 */
     @media (max-width: 480px) {
       .exam-title-top {
         font-size: 0.85rem;
@@ -508,29 +474,33 @@
       }
     }
 
-    /* ========== 电脑端（宽屏 >= 900px）两栏布局 ========== */
+    /* ========== 电脑端两栏布局：左 60% / 右 40% ========== */
     @media (min-width: 900px) {
       body {
         padding: 16px 20px 40px;
       }
       .app {
-        max-width: 1400px;
+        max-width: 1600px;
       }
       .two-col {
         display: flex;
-        gap: 24px;
+        gap: 28px;
         align-items: flex-start;
       }
+      /* 左文章：6 份 */
       .col-left {
-        flex: 1 1 55%;
+        flex: 6;
+        min-width: 0;
         position: sticky;
         top: 16px;
         max-height: calc(100vh - 120px);
         overflow-y: auto;
         padding-right: 4px;
       }
+      /* 右题目：4 份 */
       .col-right {
-        flex: 1 1 45%;
+        flex: 4;
+        min-width: 0;
         max-height: calc(100vh - 120px);
         overflow-y: auto;
         padding-right: 4px;
@@ -554,13 +524,12 @@
         background: #8fb2cd;
       }
       .pagination-wrapper {
-        max-width: 1400px;
+        max-width: 1600px;
         margin: 0 auto;
       }
       .exam-title-top {
         font-size: 1.05rem;
       }
-      /* 电脑端选项回到横向排列 */
       .options {
         flex-direction: row;
         gap: 10px;
@@ -595,6 +564,10 @@
   <div class="loading">⏳ 正在加载题库...</div>
 </div>
 <script>
+  // ========== 配置你的 Edge TTS Worker 地址 ==========
+  const TTS_WORKER_URL = 'https://tts.xiemojiy.mom/v1/audio/speech';
+  const TTS_API_KEY = '';
+
   let exams = [];
   let currentExamIndex = 0;
   let userAnswers = {};
@@ -602,6 +575,7 @@
   let showTranslation = {};
   let activeSourceKey = null;
   let currentSpeakBtn = null;
+  let currentAudio = null;
 
   function initUserAnswers() {
     exams.forEach(exam => {
@@ -629,76 +603,66 @@
     return start;
   }
 
-  function speakText(text, btnEl) {
+  function stopSpeech() {
+    if (currentAudio) {
+      try {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      } catch (e) {}
+      currentAudio = null;
+    }
     if (currentSpeakBtn) {
       currentSpeakBtn.classList.remove('speaking');
-      if (currentSpeakBtn._stopSpeech) {
-        try { currentSpeakBtn._stopSpeech(); } catch (e) {}
-        currentSpeakBtn._stopSpeech = null;
-      }
-      if (currentSpeakBtn === btnEl) {
-        currentSpeakBtn = null;
-        return;
-      }
       currentSpeakBtn = null;
     }
+  }
+
+  async function speakText(text, btnEl) {
+    if (currentSpeakBtn === btnEl && currentAudio) {
+      stopSpeech();
+      return;
+    }
+    stopSpeech();
     if (btnEl) {
       btnEl.classList.add('speaking');
       currentSpeakBtn = btnEl;
     }
-    if (window.speechSynthesis) {
-      try {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9;
-        utterance.pitch = 1;
-        utterance.onend = () => {
-          if (btnEl) btnEl.classList.remove('speaking');
-          if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
-        };
-        utterance.onerror = () => {
-          if (btnEl) btnEl.classList.remove('speaking');
-          if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
-          fallbackOnlineTTS(text, btnEl);
-        };
-        if (btnEl) {
-          btnEl._stopSpeech = () => { window.speechSynthesis.cancel(); };
-        }
-        window.speechSynthesis.speak(utterance);
-        return;
-      } catch (e) {
-        console.warn('SpeechSynthesis exception, fallback:', e);
-      }
-    }
-    fallbackOnlineTTS(text, btnEl);
-  }
-
-  function fallbackOnlineTTS(text, btnEl) {
-    const encodedText = encodeURIComponent(text);
-    const url = `https://tts.youdao.com/fanyivoice?word=${encodedText}&le=eng&keyfrom=speaker-target`;
-    const audio = new Audio(url);
-    audio.play().catch((err) => {
-      console.warn('在线 TTS 播放失败:', err);
-      if (btnEl) {
-        btnEl.classList.remove('speaking');
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (TTS_API_KEY) headers['Authorization'] = `Bearer ${TTS_API_KEY}`;
+      const response = await fetch(TTS_WORKER_URL, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          input: text,
+          voice: 'zh-CN-XiaoxiaoNeural',
+          speed: 0.95
+        })
+      });
+      if (!response.ok) throw new Error(`TTS 请求失败: ${response.status}`);
+      const blob = await response.blob();
+      const audioUrl = URL.createObjectURL(blob);
+      const audio = new Audio(audioUrl);
+      currentAudio = audio;
+      audio.onended = () => {
+        if (btnEl) btnEl.classList.remove('speaking');
         if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
-      }
-    });
-    if (btnEl) {
-      btnEl._stopSpeech = () => {
-        audio.pause();
-        audio.currentTime = 0;
+        if (currentAudio === audio) currentAudio = null;
+        URL.revokeObjectURL(audioUrl);
       };
+      audio.onerror = () => {
+        if (btnEl) btnEl.classList.remove('speaking');
+        if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
+        if (currentAudio === audio) currentAudio = null;
+        URL.revokeObjectURL(audioUrl);
+      };
+      await audio.play();
+    } catch (err) {
+      console.error('发音失败:', err);
+      if (btnEl) btnEl.classList.remove('speaking');
+      if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
+      currentAudio = null;
     }
-    audio.onended = () => {
-      if (btnEl) btnEl.classList.remove('speaking');
-      if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
-    };
-    audio.onerror = () => {
-      if (btnEl) btnEl.classList.remove('speaking');
-      if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
-    };
   }
 
   const app = document.getElementById('app');
@@ -731,7 +695,6 @@
     // ========== 左侧阅读材料 ==========
     let passageHtml = '';
 
-    // 顶部行：考期标题 + 翻译按钮
     passageHtml += `<div class="top-row">`;
     passageHtml += `<div class="exam-title-top">${exam.title}</div>`;
     passageHtml += `<button class="translate-btn" id="translateToggle"><i>🌐</i> ${translationOn ? '隐藏翻译' : '显示翻译'}</button>`;
@@ -749,14 +712,12 @@
           const isHighlight = highlightIndices.has(idx);
           passageHtml += `<div class="paragraph"><div class="en ${isHighlight ? 'highlight-source' : ''}" id="sent-${examId}-${idx}">`;
           passageHtml += `<span class="en-text">${sent.en}</span>`;
-          passageHtml += `<span class="speak-btn" data-text="${encodeURIComponent(sent.en)}" title="发音">🔊</span>`;
           passageHtml += `</div>`;
           passageHtml += `<div class="zh">${sent.zh}</div></div>`;
         });
         passageHtml += `</div>`;
       });
     } else {
-      // 非翻译模式：每个段落用不同背景色包裹
       exam.paragraphs.forEach((para, pIdx) => {
         const colorClass = `color-${pIdx % 5}`;
         const startIdx = getParagraphStartIndex(exam, pIdx);
@@ -791,7 +752,6 @@
       const answerDisplay = q.answer;
       const hasSource = q.sourceIndices && q.sourceIndices.length > 0;
       const isActive = activeSourceKey === qKey;
-      // 每道题按索引循环使用颜色
       const questionColorClass = `color-${idx % 5}`;
 
       questionsHtml += `<div class="question-item ${questionColorClass}" data-qidx="${idx}">`;
@@ -839,7 +799,6 @@
     html += `<div class="col-right" id="colRight">${questionsHtml}</div>`;
     html += `</div>`;
 
-    // ===== 分页器 =====
     html += `<div class="pagination-wrapper">`;
     html += `<div class="pagination">`;
     html += `<button class="page-btn" id="prevBtn" ${currentExamIndex === 0 ? 'disabled' : ''}>← 上一页</button>`;
@@ -855,7 +814,6 @@
 
     app.innerHTML = html;
     bindCommonEvents(exam, examId, isSubmitted, translationOn);
-    bindSpeakButtons();
 
     if (highlightIndices.size > 0) {
       const firstIdx = Math.min(...highlightIndices);
@@ -866,29 +824,11 @@
     }
   }
 
-  function bindSpeakButtons() {
-    document.querySelectorAll('.speak-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const text = decodeURIComponent(btn.dataset.text || '');
-        if (text) speakText(text, btn);
-      });
-    });
-  }
-
   function bindCommonEvents(exam, examId, isSubmitted, translationOn) {
     const transBtn = document.getElementById('translateToggle');
     if (transBtn) {
       transBtn.addEventListener('click', () => {
-        if (currentSpeakBtn) {
-          currentSpeakBtn.classList.remove('speaking');
-          if (currentSpeakBtn._stopSpeech) {
-            try { currentSpeakBtn._stopSpeech(); } catch (e) {}
-            currentSpeakBtn._stopSpeech = null;
-          }
-          currentSpeakBtn = null;
-        }
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        stopSpeech();
         showTranslation[examId] = !showTranslation[examId];
         render();
       });
@@ -922,6 +862,7 @@
         if (!allAnswered) { alert('请先完成所有题目再提交。'); return; }
         submitted[examId] = true;
         activeSourceKey = null;
+        stopSpeech();
         render();
       });
     }
@@ -932,6 +873,7 @@
         exam.questions.forEach((_, idx) => { userAnswers[`${examId}_${idx}`] = null; });
         submitted[examId] = false;
         activeSourceKey = null;
+        stopSpeech();
         render();
       });
     }
@@ -948,17 +890,11 @@
       });
     }
 
-    // ===== 翻页逻辑 =====
     function goToExam(index) {
       if (index < 0 || index >= exams.length) return;
+      stopSpeech();
       currentExamIndex = index;
       activeSourceKey = null;
-      if (currentSpeakBtn) {
-        currentSpeakBtn.classList.remove('speaking');
-        if (currentSpeakBtn._stopSpeech) { try { currentSpeakBtn._stopSpeech(); } catch (e) {} }
-        currentSpeakBtn = null;
-      }
-      if (window.speechSynthesis) window.speechSynthesis.cancel();
       render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -980,29 +916,17 @@
     if (pageInput) {
       const handleJump = () => {
         let val = parseInt(pageInput.value, 10);
-        if (isNaN(val)) {
-          pageInput.value = currentExamIndex + 1;
-          return;
-        }
+        if (isNaN(val)) { pageInput.value = currentExamIndex + 1; return; }
         if (val < 1) val = 1;
         if (val > exams.length) val = exams.length;
-        if (val - 1 === currentExamIndex) {
-          pageInput.value = currentExamIndex + 1;
-          return;
-        }
+        if (val - 1 === currentExamIndex) { pageInput.value = currentExamIndex + 1; return; }
         goToExam(val - 1);
       };
       pageInput.addEventListener('blur', handleJump);
       pageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleJump();
-          pageInput.blur();
-        }
+        if (e.key === 'Enter') { e.preventDefault(); handleJump(); pageInput.blur(); }
       });
-      pageInput.addEventListener('focus', () => {
-        pageInput.select();
-      });
+      pageInput.addEventListener('focus', () => { pageInput.select(); });
     }
   }
 
