@@ -77,6 +77,14 @@
             font-weight: 600;
             color: #0d2e4e;
         }
+        /* ===== 控制区：翻译按钮 + 音色选择 ===== */
+        .article-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
         .translate-btn {
             background: #eef3fe;
             border: none;
@@ -91,8 +99,32 @@
             font-size: 0.9rem;
             transition: background 0.2s;
             box-shadow: 0 2px 6px rgba(0, 70, 150, 0.08);
+            -webkit-tap-highlight-color: transparent;
         }
         .translate-btn:hover { background: #d9e6ff; }
+        .translate-btn.active { background: #1f4e8c; color: white; }
+
+        /* ===== 音色选择下拉框 ===== */
+        .voice-select {
+            background: #ffffff;
+            border: 1px solid #cfd9e6;
+            padding: 9px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #1e3e6e;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231e3e6e%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 10px;
+            padding-right: 32px;
+            max-width: 180px;
+        }
+        .voice-select:focus { border-color: #1f4e8c; }
 
         /* 段落背景色 */
         .para-block {
@@ -419,6 +451,20 @@
             .pager-bottom input { width: 55px; padding: 8px 4px; }
             .options { flex-direction: row; gap: 8px; }
             .opt { padding: 8px 14px; font-size: 0.88rem; }
+            /* 手机端：文章标题、按钮、下拉框换行 */
+            .article-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .article-controls {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .voice-select {
+                max-width: 100%;
+                flex: 1;
+                min-width: 130px;
+            }
         }
     </style>
 </head>
@@ -431,17 +477,34 @@
     // ========== 配置你的 Edge TTS Worker 地址 ==========
     const TTS_WORKER_URL = 'https://tts.xiemojy.mom/v1/audio/speech';
 
+    // 默认音色（英文）：美式女声 Jenny
+    const DEFAULT_VOICE = 'en-US-JennyNeural';
+    const VOICE_STORAGE_KEY = 'tts_voice_preference_reading';
+
     let exams = [];
     let currentExamIndex = 0;
-    let userAnswers = {};       // { examId_idx: 'A'|'B'|'C' }
-    let submitted = {};         // { examId: bool }
-    let showTranslation = {};   // { examId: bool }
-    let activeSourceKey = null; // 当前展示来源的题目key: examId_idx
+    let userAnswers = {};
+    let submitted = {};
+    let showTranslation = {};
+    let activeSourceKey = null;
     let currentSpeakBtn = null;
     let globalAudio = null;
     let audioUnlocked = false;
 
     const app = document.getElementById('app');
+
+    // ========== 音色选择（持久化） ==========
+    function loadVoicePreference() {
+        try {
+            const saved = localStorage.getItem(VOICE_STORAGE_KEY);
+            return saved || DEFAULT_VOICE;
+        } catch (e) {
+            return DEFAULT_VOICE;
+        }
+    }
+    function saveVoicePreference(v) {
+        try { localStorage.setItem(VOICE_STORAGE_KEY, v); } catch (e) {}
+    }
 
     // ========== 初始化数据 ==========
     function initUserAnswers() {
@@ -508,12 +571,13 @@
         }
 
         try {
+            const voice = loadVoicePreference();
             const response = await fetch(TTS_WORKER_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     input: text,
-                    voice: 'zh-CN-XiaoxiaoNeural',
+                    voice: voice,
                     speed: 0.95
                 })
             });
@@ -581,13 +645,11 @@
         const isSubmitted = submitted[examId];
         const translationOn = showTranslation[examId];
 
-        // 计算得分
         let score = 0;
         exam.questions.forEach((q, idx) => {
             if (userAnswers[`${examId}_${idx}`] === q.answer) score++;
         });
 
-        // 高亮来源句子
         const highlightIndices = new Set();
         if (isSubmitted && activeSourceKey && activeSourceKey.startsWith(examId + '_')) {
             const idx = parseInt(activeSourceKey.split('_')[1], 10);
@@ -601,7 +663,17 @@
         let articleHtml = '';
         articleHtml += `<div class="article-header">`;
         articleHtml += `<h2 id="articleTitle">${exam.subtitle || exam.title}</h2>`;
-        articleHtml += `<button class="translate-btn" id="translateToggle">🌐 ${translationOn ? '隐藏翻译' : '全文翻译'}</button>`;
+        articleHtml += `<div class="article-controls">`;
+        articleHtml += `<button class="translate-btn ${translationOn ? 'active' : ''}" id="translateToggle">🌐 ${translationOn ? '隐藏翻译' : '全文翻译'}</button>`;
+        articleHtml += `<select class="voice-select" id="voiceSelect" style="display:${translationOn ? '' : 'none'};" title="选择发音音色">`;
+        articleHtml += `<option value="en-US-JennyNeural">👩 美式女声 Jenny</option>`;
+        articleHtml += `<option value="en-US-AriaNeural">👩 美式女声 Aria</option>`;
+        articleHtml += `<option value="en-US-GuyNeural">👨 美式男声 Guy</option>`;
+        articleHtml += `<option value="en-GB-SoniaNeural">👩 英式女声 Sonia</option>`;
+        articleHtml += `<option value="en-GB-RyanNeural">👨 英式男声 Ryan</option>`;
+        articleHtml += `<option value="en-AU-NatashaNeural">👩 澳式女声 Natasha</option>`;
+        articleHtml += `</select>`;
+        articleHtml += `</div>`;
         articleHtml += `</div>`;
 
         exam.paragraphs.forEach((para, pIdx) => {
@@ -609,7 +681,6 @@
             articleHtml += `<div class="para-block ${colorClass}">`;
 
             if (translationOn) {
-                // 翻译模式：逐句 + 中文 + 发音按钮
                 para.sentences.forEach((sent, sIdx) => {
                     const idx = getParagraphStartIndex(exam, pIdx) + sIdx;
                     const isHighlight = highlightIndices.has(idx);
@@ -622,7 +693,6 @@
                     articleHtml += `</div>`;
                 });
             } else {
-                // 非翻译模式：整段显示
                 let paraText = '';
                 para.sentences.forEach((sent, sIdx) => {
                     const idx = getParagraphStartIndex(exam, pIdx) + sIdx;
@@ -667,7 +737,6 @@
             });
             quizHtml += `</div></div>`;
 
-            // 内联详解
             quizHtml += `<div class="explain-inline ${colorClass}" id="explain-${qKey}" style="display:none;"></div>`;
             quizHtml += `</div>`;
         });
@@ -713,10 +782,18 @@
 
         app.innerHTML = html;
 
+        // 恢复音色选择
+        const voiceSelect = document.getElementById('voiceSelect');
+        if (voiceSelect) {
+            voiceSelect.value = loadVoicePreference();
+            voiceSelect.addEventListener('change', () => {
+                saveVoicePreference(voiceSelect.value);
+            });
+        }
+
         bindEvents(exam, examId, isSubmitted, translationOn);
         bindSpeakButtons();
 
-        // 若已提交且激活了来源，滚动到对应句子
         if (highlightIndices.size > 0) {
             const firstIdx = Math.min(...highlightIndices);
             const el = document.getElementById(`sent-${examId}-${firstIdx}`);
@@ -726,7 +803,6 @@
         }
     }
 
-    // ========== 选项点击 ==========
     window.selectOption = function(el, qIdx, optLetter) {
         const exam = exams[currentExamIndex];
         const examId = exam.id;
@@ -734,7 +810,6 @@
         const qKey = `${examId}_${qIdx}`;
         userAnswers[qKey] = optLetter;
 
-        // 同组取消选中
         const parent = el.closest('.match-item');
         if (parent) {
             parent.querySelectorAll('.opt').forEach(opt => opt.classList.remove('selected'));
@@ -742,7 +817,6 @@
         el.classList.add('selected');
     };
 
-    // ========== 发音按钮 ==========
     function bindSpeakButtons() {
         document.querySelectorAll('.speaker').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -754,9 +828,7 @@
         });
     }
 
-    // ========== 事件绑定 ==========
     function bindEvents(exam, examId, isSubmitted, translationOn) {
-        // 翻译切换
         const transBtn = document.getElementById('translateToggle');
         if (transBtn) {
             transBtn.addEventListener('click', () => {
@@ -766,7 +838,6 @@
             });
         }
 
-        // 提交
         const submitBtn = document.getElementById('submitBtn');
         if (submitBtn && !isSubmitted) {
             submitBtn.addEventListener('click', () => {
@@ -779,7 +850,6 @@
                 activeSourceKey = null;
                 stopSpeech();
                 render();
-                // 显示每道题的详解
                 exam.questions.forEach((q, idx) => {
                     const qKey = `${examId}_${idx}`;
                     const userAns = userAnswers[qKey];
@@ -804,7 +874,6 @@
                     explainDiv.innerHTML = html;
                     explainDiv.style.display = 'block';
                 });
-                // 绑定来源按钮
                 document.querySelectorAll('.source-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const qKey = e.currentTarget.dataset.qkey;
@@ -812,14 +881,12 @@
                         if (activeSourceKey === qKey) activeSourceKey = null;
                         else activeSourceKey = qKey;
                         render();
-                        // 重新提交后需要再次填充详解
                         setTimeout(() => fillExplainAfterRender(exam, examId), 0);
                     });
                 });
             });
         }
 
-        // 重新作答
         const resetBtn = document.getElementById('resetBtn');
         if (resetBtn) {
             resetBtn.addEventListener('click', () => {
@@ -831,7 +898,6 @@
             });
         }
 
-        // 分页
         const prevBtn = document.getElementById('prevBtn');
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
@@ -862,7 +928,6 @@
         }
     }
 
-    // 提交后渲染完再次填充详解（用于来源按钮点击后的重新渲染）
     function fillExplainAfterRender(exam, examId) {
         if (!submitted[examId]) return;
         exam.questions.forEach((q, idx) => {
@@ -890,7 +955,6 @@
             explainDiv.innerHTML = html;
             explainDiv.style.display = 'block';
         });
-        // 重新绑定来源按钮
         document.querySelectorAll('.source-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const qKey = e.currentTarget.dataset.qkey;
@@ -903,7 +967,6 @@
         });
     }
 
-    // ========== 分页跳转 ==========
     function goToExam(index) {
         if (index < 0 || index >= exams.length) return;
         stopSpeech();
@@ -913,6 +976,15 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ========== iOS 微信音频解锁 ==========
+    function unlockIOSAudio() {
+        try {
+            const silent = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+            silent.volume = 0;
+            silent.play().catch(() => {});
+        } catch (e) { /* 忽略 */ }
+    }
+
     // ========== 加载数据 ==========
     fetch('./data.json')
         .then(res => { if (!res.ok) throw new Error('无法加载 data.json'); return res.json(); })
@@ -920,6 +992,8 @@
             exams = data;
             buildFlatSentences();
             initUserAnswers();
+            // 页面加载后解锁音频
+            unlockIOSAudio();
             render();
         })
         .catch(err => {
