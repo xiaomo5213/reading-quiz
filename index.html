@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>阅读判断 · 在线练习</title>
+    <link rel="stylesheet" href="./lecture.css">
     <style>
+        /* 防止移动端双击朗读图标/按钮触发页面缩放 */
+        body, button, .speaker, .opt, .translate-btn, .source-btn, select, input {
+            touch-action: manipulation;
+        }
+        /* 讲解模式入口按钮 */
+        .lecture-btn {
+            background: linear-gradient(135deg, #1f4e8c, #2f6cb8);
+            color: #fff; border: none;
+            padding: 9px 20px; border-radius: 40px;
+            font-size: .88rem; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(31, 78, 140, .25);
+            transition: transform .15s, box-shadow .2s;
+        }
+        .lecture-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(31, 78, 140, .3); }
+        .lecture-btn:active { transform: translateY(0); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
@@ -167,6 +183,7 @@
             font-size: 13px;
             cursor: pointer;
             flex-shrink: 0;
+            overflow: hidden;
             transition: background 0.2s;
             user-select: none;
             vertical-align: middle;
@@ -435,7 +452,7 @@
             color: #7a8b9f;
             text-align: center;
         }
-        .loading {
+        .page-loading {
             text-align: center;
             padding: 60px 20px;
             color: #4a5b6e;
@@ -470,15 +487,26 @@
 </head>
 <body>
 <div class="app" id="app">
-    <div class="loading">⏳ 正在加载题库...</div>
+    <div class="page-loading">⏳ 正在加载题库...</div>
 </div>
 
+<!-- data.js：内嵌数据，保证本地双击 file:// 打开也能加载 -->
+<script src="./data.js"></script>
+<!-- lecture-script.js：讲解模式口播稿（离线生成，独立数据文件，随页面一起上传 Git 即可用） -->
+<script src="./lecture-script.js"></script>
+<!-- 讲解模式：引擎 + 界面 -->
+<script src="./lecture.js"></script>
+<script src="./lecture-ui.js"></script>
 <script>
     // ========== 配置你的 Edge TTS Worker 地址 ==========
-    const TTS_WORKER_URL = 'https://tts.xiemojy.mom/v1/audio/speech';
+    // 讲解模式与页面朗读均走在线合成，不依赖本地音频文件
+    const TTS_WORKER_URL = 'https://api.xiemojy.mom/v1/audio/speech';
+    // 挂到 window 上，供 lecture.js 读取（const 只在本脚本作用域可见，不挂 window）
+    window.TTS_WORKER_URL = TTS_WORKER_URL;
 
-    // 默认音色（英文）：美式女声 Jenny
-    const DEFAULT_VOICE = 'en-US-JennyNeural';
+    // 默认音色（英文）：多语言女声 Ava —— 单一音色即可中英混读，
+    // 讲解模式用它时不再按语言切分，杜绝分段边界误判导致的漏读。
+    const DEFAULT_VOICE = 'en-US-AvaMultilingualNeural';
     const VOICE_STORAGE_KEY = 'tts_voice_preference_reading';
 
     let exams = [];
@@ -558,17 +586,38 @@
         }
     }
 
+    const SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+
+    // 必须在用户点击手势内同步调用，否则异步请求回来后浏览器会拒绝自动播放
+    function unlockAudio() {
+        if (audioUnlocked) return;
+        try {
+            const audio = getGlobalAudio();
+            audio.volume = 0;
+            audio.src = SILENT_WAV;
+            const p = audio.play();
+            if (p && p.catch) p.catch(() => {});
+            audio.volume = 1;
+            audioUnlocked = true;
+        } catch (e) { /* 忽略 */ }
+    }
+
     async function speakText(text, btnEl) {
         if (currentSpeakBtn === btnEl && globalAudio && !globalAudio.paused) {
             stopSpeech();
             return;
         }
+        // 点击同一按钮但音频还没就绪时，视为切换目标
         stopSpeech();
 
         if (btnEl) {
             btnEl.classList.add('loading');
             currentSpeakBtn = btnEl;
         }
+
+        // 超时控制：TTS 无响应时不再无限等待
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 20000);
 
         try {
             const voice = loadVoicePreference();
@@ -579,8 +628,10 @@
                     input: text,
                     voice: voice,
                     speed: 0.95
-                })
+                }),
+                signal: controller.signal
             });
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 throw new Error(`TTS 请求失败: ${response.status}`);
@@ -624,20 +675,25 @@
                 }
             }
         } catch (err) {
+            clearTimeout(timeoutId);
             console.error('发音失败:', err);
             if (btnEl) {
                 btnEl.classList.remove('loading');
                 btnEl.classList.remove('speaking');
             }
             if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
-            alert('发音失败，请检查网络或稍后重试');
+            if (err && err.name === 'AbortError') {
+                alert('发音请求超时，请检查网络后重试');
+            } else {
+                alert('发音失败，请检查网络或稍后重试');
+            }
         }
     }
 
     // ========== 渲染 ==========
     function render() {
         if (!exams.length) {
-            app.innerHTML = '<div class="loading">⚠️ 题库数据为空，请检查 data.json</div>';
+            app.innerHTML = '<div class="page-loading">⚠️ 题库数据为空，请检查 data.json</div>';
             return;
         }
         const exam = exams[currentExamIndex];
@@ -666,12 +722,25 @@
         articleHtml += `<div class="article-controls">`;
         articleHtml += `<button class="translate-btn ${translationOn ? 'active' : ''}" id="translateToggle">🌐 ${translationOn ? '隐藏翻译' : '全文翻译'}</button>`;
         articleHtml += `<select class="voice-select" id="voiceSelect" style="display:${translationOn ? '' : 'none'};" title="选择发音音色">`;
+        // ---- 多语言音色（中英混读，推荐） ----
+        articleHtml += `<optgroup label="多语言（中英混读·推荐）">`;
+        articleHtml += `<option value="en-US-AvaMultilingualNeural">🌍 多语言女声 Ava</option>`;
+        articleHtml += `<option value="en-US-EmmaMultilingualNeural">🌍 多语言女声 Emma</option>`;
+        articleHtml += `<option value="en-US-AndrewMultilingualNeural">🌍 多语言男声 Andrew</option>`;
+        articleHtml += `<option value="en-US-BrianMultilingualNeural">🌍 多语言男声 Brian</option>`;
+        articleHtml += `<option value="zh-CN-XiaoxiaoMultilingualNeural">🌍 多语言女声 晓晓</option>`;
+        articleHtml += `<option value="zh-CN-XiaochenMultilingualNeural">🌍 多语言女声 晓辰</option>`;
+        articleHtml += `<option value="zh-CN-XiaoyuMultilingualNeural">🌍 多语言女声 晓宇</option>`;
+        articleHtml += `<option value="zh-CN-YunyiMultilingualNeural">🌍 多语言男声 云逸</option>`;
+        articleHtml += `</optgroup>`;
+        articleHtml += `<optgroup label="纯英文（仅读英文）">`;
         articleHtml += `<option value="en-US-JennyNeural">👩 美式女声 Jenny</option>`;
         articleHtml += `<option value="en-US-AriaNeural">👩 美式女声 Aria</option>`;
         articleHtml += `<option value="en-US-GuyNeural">👨 美式男声 Guy</option>`;
         articleHtml += `<option value="en-GB-SoniaNeural">👩 英式女声 Sonia</option>`;
         articleHtml += `<option value="en-GB-RyanNeural">👨 英式男声 Ryan</option>`;
         articleHtml += `<option value="en-AU-NatashaNeural">👩 澳式女声 Natasha</option>`;
+        articleHtml += `</optgroup>`;
         articleHtml += `</select>`;
         articleHtml += `</div>`;
         articleHtml += `</div>`;
@@ -687,7 +756,7 @@
                     articleHtml += `<div class="sentence-block">`;
                     articleHtml += `<div class="sentence-line ${isHighlight ? 'highlight-source' : ''}" id="sent-${examId}-${idx}">`;
                     articleHtml += `<span class="eng-sentence-text">${sent.en}</span>`;
-                    articleHtml += `<span class="speaker" data-text="${encodeURIComponent(sent.en)}" title="发音">🔊</span>`;
+                    articleHtml += `<span class="speaker" data-text="${encodeURIComponent(sent.en)}" title="发音"><svg viewBox="0 0 24 24" width="13" height="13" style="display:block" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8.6a5 5 0 0 1 0 6.8M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>`;
                     articleHtml += `</div>`;
                     articleHtml += `<div class="trans-text">${sent.zh}</div>`;
                     articleHtml += `</div>`;
@@ -760,6 +829,7 @@
             <h1>📘 阅读判断</h1>
             <div class="subhead">
                 <span id="examInfo">${exam.title || exam.id}真题</span>
+                <button class="lecture-btn" id="lectureBtn">🎧 讲解模式</button>
             </div>
             <div class="main-panel">
                 <div class="left-col">
@@ -822,6 +892,8 @@
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 e.preventDefault();
+                // 在手势内同步解锁音频，避免 fetch 返回后 play() 被浏览器拦截
+                unlockAudio();
                 const text = decodeURIComponent(btn.dataset.text || '');
                 if (text) speakText(text, btn);
             });
@@ -829,6 +901,14 @@
     }
 
     function bindEvents(exam, examId, isSubmitted, translationOn) {
+        const lectureBtn = document.getElementById('lectureBtn');
+        if (lectureBtn) {
+            lectureBtn.addEventListener('click', () => {
+                stopSpeech();
+                window.LectureUI.open(exam, { onClose: () => {} });
+            });
+        }
+
         const transBtn = document.getElementById('translateToggle');
         if (transBtn) {
             transBtn.addEventListener('click', () => {
@@ -986,20 +1066,27 @@
     }
 
     // ========== 加载数据 ==========
-    fetch('./data.json')
-        .then(res => { if (!res.ok) throw new Error('无法加载 data.json'); return res.json(); })
-        .then(data => {
-            exams = data;
-            buildFlatSentences();
-            initUserAnswers();
-            // 页面加载后解锁音频
-            unlockIOSAudio();
-            render();
-        })
-        .catch(err => {
-            console.error('加载数据失败:', err);
-            app.innerHTML = '<div class="loading">❌ 数据加载失败，请确认 data.json 文件存在且格式正确。<br><br>' + err.message + '</div>';
-        });
+    // 优先使用 data.js（script 标签加载，本地双击 file:// 打开也能用）；
+    // 若 data.js 不存在，再回退到 fetch data.json（需 http(s) 环境）。
+    function startApp(data) {
+        exams = data;
+        buildFlatSentences();
+        initUserAnswers();
+        unlockIOSAudio();
+        render();
+    }
+
+    if (window.READING_EXAM_DATA && window.READING_EXAM_DATA.length) {
+        startApp(window.READING_EXAM_DATA);
+    } else {
+        fetch('./data.json')
+            .then(res => { if (!res.ok) throw new Error('无法加载 data.json'); return res.json(); })
+            .then(startApp)
+            .catch(err => {
+                console.error('加载数据失败:', err);
+                app.innerHTML = '<div class="page-loading">❌ 数据加载失败：未找到 data.js，且通过 http 访问 data.json 也失败。<br><br>' + err.message + '</div>';
+            });
+    }
 </script>
 </body>
 </html>
